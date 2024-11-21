@@ -19,7 +19,7 @@
 - ArduinoJson
 
 
-## Descrição do projeto - Global Solution
+### Descrição do projeto - Global Solution
 <p>Este projeto implementa um sistema de monitoramento da qualidade do ar, projetado para ser utilizado em filtros de poluentes ou ambientes abertos. O dispositivo mede temperatura, umidade e fluxo de gás e calcula a saturação do ar com base nesses valores. As informações são publicadas em um broker MQTT, facilitando sua integração com sistemas de Internet das Coisas (IoT).</p>
 
 <p><b>Objetivo do projeto:</b> O objetivo é desenvolver um sistema que monitore variáveis relacionadas à qualidade do ar, como:</p>
