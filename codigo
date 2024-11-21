@@ -1,0 +1,189 @@
+#include <WiFi.h>
+#include <ArduinoJson.h>
+#include <DHTesp.h>
+#include <PubSubClient.h>
+
+// Configurações de WiFi
+const char *SSID = "Wokwi-GUEST";
+const char *PASSWORD = "";  // Substitua pelo sua senha
+
+// Configurações de MQTT
+const char *BROKER_MQTT = "test.mosquitto.org";
+const int BROKER_PORT = 1883;
+String clientId = "roger0n_GS_" + String(random(0, 1000));
+const char *ID_MQTT;
+const char *TOPIC_PUBLISH_TEMP_HUMI_GAS_SATU = "GS/info/filtro";
+
+// Configurações de Hardware
+#define PIN_DHT 12
+#define PUBLISH_DELAY 2000
+
+// potenciometro
+#define potenciometro_pino 34
+
+// Variáveis globais
+WiFiClient espClient;
+PubSubClient MQTT(espClient);
+DHTesp dht;
+unsigned long publishUpdate = 0;
+TempAndHumidity sensorValues;
+const int TAMANHO = 256;
+float saturacao_total = 0;
+
+// Protótipos de funções
+void updateSensorValues();
+void initWiFi();
+void initMQTT();
+void callbackMQTT(char *topic, byte *payload, unsigned int length);
+void reconnectMQTT();
+void reconnectWiFi();
+void checkWiFIAndMQTT();
+
+void updateSensorValues() {
+  sensorValues = dht.getTempAndHumidity();
+}
+
+void initWiFi() {
+  Serial.print("Conectando com a rede: ");
+  Serial.println(SSID);
+  WiFi.begin(SSID, PASSWORD);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100);
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.print("Conectado com sucesso: ");
+  Serial.println(SSID);
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+void initMQTT() {
+  MQTT.setServer(BROKER_MQTT, BROKER_PORT);
+  MQTT.setCallback(callbackMQTT);
+}
+
+void callbackMQTT(char *topic, byte *payload, unsigned int length) {
+  String msg = String((char*)payload).substring(0, length);
+  
+  Serial.printf("Mensagem recebida via MQTT: %s do tópico: %s\n", msg.c_str(), topic);
+
+}
+
+void reconnectMQTT() {
+  while (!MQTT.connected()) {
+    Serial.print("Tentando conectar com o Broker MQTT: ");
+    Serial.println(BROKER_MQTT);
+
+    if (MQTT.connect(ID_MQTT)) {
+      Serial.println("Conectado ao broker MQTT!");
+    } 
+    else {
+      Serial.println("Falha na conexão com MQTT. Tentando novamente em 2 segundos.");
+      delay(2000);
+    }
+  }
+}
+
+void checkWiFIAndMQTT() {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Wi-Fi desconectado. Reconectando...");
+    reconnectWiFi();
+  }
+
+  if (!MQTT.connected()) {
+    Serial.println("MQTT desconectado. Reconectando...");
+    reconnectMQTT();
+  }
+}
+
+
+
+void reconnectWiFi(void) {
+  if (WiFi.status() == WL_CONNECTED)
+    return;
+
+  WiFi.begin(SSID, PASSWORD); // Conecta na rede WI-FI
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100);
+    Serial.print(".");
+  }
+
+  Serial.println();
+  Serial.print("Wifi conectado com sucesso");
+  Serial.print(SSID);
+  Serial.println("IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+float calcularSaturacao(float temperatura, float umidade) {
+  // Temperatura máxima teórica (ajuste conforme necessário)
+  const float TEMP_MAX = 50.0;
+
+  // Se a temperatura ou umidade for inválida, retorne NaN
+  if (temperatura < 0 || temperatura > TEMP_MAX || umidade < 0 || umidade > 100) {
+    return NAN;
+  }
+
+  // Fórmula para calcular saturação
+  float saturacao = umidade * (temperatura / TEMP_MAX);
+
+  // Garantir que o valor esteja no intervalo válido [0, 100]
+  if (saturacao > 100.0) saturacao = 100.0;
+  if (saturacao < 0.0) saturacao = 0.0;
+
+  return saturacao;
+}
+
+
+
+
+void setup() {
+  Serial.begin(115200);
+
+  ID_MQTT = clientId.c_str();
+  dht.setup(PIN_DHT, DHTesp::DHT22);
+  pinMode(potenciometro_pino, INPUT);
+  initWiFi();
+  initMQTT();
+}
+
+
+void loop() {
+  checkWiFIAndMQTT(); // Verifica conexões Wi-Fi e MQTT
+  MQTT.loop(); // Mantém o cliente MQTT ativo
+
+  // Lê o potenciômetro
+  int valor_potenciometro = analogRead(potenciometro_pino);
+  float fluxo_gas = (valor_potenciometro / 4095.0) * 100;
+
+  // Atualiza os valores do sensor a cada intervalo
+  if ((millis() - publishUpdate) >= PUBLISH_DELAY) {
+    publishUpdate = millis();
+
+    updateSensorValues();
+
+    // Apenas publica se os valores forem válidos
+    if (!isnan(sensorValues.temperature) && !isnan(sensorValues.humidity)) {
+      float saturacao_total = calcularSaturacao(sensorValues.temperature, sensorValues.humidity);
+
+      StaticJsonDocument<TAMANHO> doc;
+      doc["fluxo_gas"] = fluxo_gas;
+      doc["temperatura"] = sensorValues.temperature;
+      doc["umidade"] = sensorValues.humidity;
+
+      if (!isnan(saturacao_total)) {
+        doc["saturacao_total"] = saturacao_total;
+        } 
+
+      char buffer[TAMANHO];
+      serializeJson(doc, buffer);
+      MQTT.publish(TOPIC_PUBLISH_TEMP_HUMI_GAS_SATU, buffer);
+      Serial.println(buffer);
+    }
+
+  }
+}
