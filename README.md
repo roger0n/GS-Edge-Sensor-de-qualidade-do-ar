@@ -42,6 +42,19 @@ Os dados coletados são enviados em tempo real para um broker MQTT, permitindo q
 
 
 <p><b>Configuração do Hardware:</b></p>
+Esquema de Conexão
+DHT22:
+<ul>
+  <li>VCC: 3.3V do ESP32</li>
+  <li>GND: GND do ESP32</li>
+  <li> Data: GPIO 12</li>
+</ul>
+Potenciômetro:
+<ul>
+  <li>VCC: 3.3V do ESP32</li>
+  <li>GND: GND do ESP32</li>
+  <li>Sinal: GPIO 34</li>
+</ul>
 
 
 <p><b>Como usar:</b></p>
