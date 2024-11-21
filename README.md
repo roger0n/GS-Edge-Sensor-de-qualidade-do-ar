@@ -59,16 +59,22 @@ Potenciômetro:
 <p><b>Configuração do Software:</b></p>
 <ul>
   <li> Instale a Arduino IDE no seu computador.</li>
-  <li> Configure a placa ESP32 na IDE: Acesse Ferramentas > Placa > Gerenciador de Placas.
- Instale a plataforma ESP32.
- Selecione a placa ESP32 e a porta correspondente.</li>
-  <li> Instale as bibliotecas necessárias: Acesse Ferramentas > Gerenciador de Bibliotecas e procure por:
-PubSubClient
-DHT sensor library for ESPx (DHTesp)
-ArduinoJson</li>
-  <li> Atualize as credenciais no código: const char *SSID = "SEU_WIFI";
-const char *PASSWORD = "SUA_SENHA";
-</li>
+  <li> Configure a placa ESP32 na IDE: 
+    <ul>
+      <li>Acesse Ferramentas > Placa > Gerenciador de Placas.</li>
+      <li>Instale a plataforma ESP32.</li>
+      <li>Selecione a placa ESP32 e a porta correspondente.</li>
+    </ul>
+  </li>
+  <li> Instale as bibliotecas necessárias: 
+    <ul>
+      <li>Acesse Ferramentas > Gerenciador de Bibliotecas e procure por:</li>
+      <li>PubSubClient</li>
+      <li>DHT sensor library for ESPx (DHTesp)</li>
+      <li>ArduinoJson</li>
+    </ul>
+  </li>
+  <li> Atualize as credenciais no código: const char *SSID = "SEU_WIFI"; e const char *PASSWORD = "SUA_SENHA";</li>
 </ul>
 
 <p><b>Como usar:</b></p>
