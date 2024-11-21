@@ -19,7 +19,7 @@
 - ArduinoJson
 
 
-### Descrição do projeto - Global Solution
+## Descrição do projeto - Global Solution
 <p>Este projeto implementa um sistema de monitoramento da qualidade do ar, projetado para ser utilizado em filtros de poluentes ou ambientes abertos. O dispositivo mede temperatura, umidade e fluxo de gás e calcula a saturação do ar com base nesses valores. As informações são publicadas em um broker MQTT, facilitando sua integração com sistemas de Internet das Coisas (IoT).</p>
 
 <p><b>Objetivo do projeto:</b> O objetivo é desenvolver um sistema que monitore variáveis relacionadas à qualidade do ar, como:</p>
@@ -32,12 +32,14 @@ Os dados coletados são enviados em tempo real para um broker MQTT, permitindo q
 
 
 <p><b>Funcionalidades:</b></p>
-- Medição de temperatura e umidade com um sensor DHT22.
-- Simulação de fluxo de gás com um potenciômetro.
-- Cálculo da saturação do ar com base na fórmula: saturação = umidade x (temperatura/TEMP_MAX) onde TEMP_MAX é a temperatura máxima teórica ajustável
-- Publicação dos dados em formato JSON no broker MQTT.
-- Reconexão automática ao Wi-Fi e MQTT em caso de falhas.
-- Sistema extensível para inclusão de novos sensores ou funcionalidades.
+<ul>
+<li>- Medição de temperatura e umidade com um sensor DHT22.</li>
+<li>- Simulação de fluxo de gás com um potenciômetro.</li>
+<li>- Cálculo da saturação do ar com base na fórmula: saturação = umidade x (temperatura/TEMP_MAX) onde TEMP_MAX é a temperatura máxima teórica ajustável</li>
+<li>- Publicação dos dados em formato JSON no broker MQTT.</li>
+<li>- Reconexão automática ao Wi-Fi e MQTT em caso de falhas.</li>
+<li>- Sistema extensível para inclusão de novos sensores ou funcionalidades.</li>
+</ul>
 
 <p><b>Como usar:</b></p>
 1. Faça o upload do código para o ESP32 através da Arduino IDE.
