@@ -42,7 +42,7 @@ Os dados coletados são enviados em tempo real para um broker MQTT, permitindo q
 
 
 <p><b>Configuração do Hardware:</b></p>
-Esquema de Conexão
+<p>Esquema de Conexão:</p>
 DHT22:
 <ul>
   <li>VCC: 3.3V do ESP32</li>
@@ -56,6 +56,20 @@ Potenciômetro:
   <li>Sinal: GPIO 34</li>
 </ul>
 
+<p><b>Configuração do Software:</b></p>
+<ul>
+  <li> Instale a Arduino IDE no seu computador.</li>
+  <li> Configure a placa ESP32 na IDE: Acesse Ferramentas > Placa > Gerenciador de Placas.
+ Instale a plataforma ESP32.
+ Selecione a placa ESP32 e a porta correspondente.</li>
+  <li> Instale as bibliotecas necessárias: Acesse Ferramentas > Gerenciador de Bibliotecas e procure por:
+PubSubClient
+DHT sensor library for ESPx (DHTesp)
+ArduinoJson</li>
+  <li> Atualize as credenciais no código: const char *SSID = "SEU_WIFI";
+const char *PASSWORD = "SUA_SENHA";
+</li>
+</ul>
 
 <p><b>Como usar:</b></p>
 <ul>  
