@@ -40,16 +40,17 @@ Os dados coletados são enviados em tempo real para um broker MQTT, permitindo q
   <li>- Sistema extensível para inclusão de novos sensores ou funcionalidades.</li>
 </ul>
 
+
+<p><b>Configuração do Hardware:</b></p>
+
+
 <p><b>Como usar:</b></p>
-1. Faça o upload do código para o ESP32 através da Arduino IDE.
-2. Conecte o ESP32 à alimentação.
-3. Acompanhe o monitor serial para verificar o status das conexões e os dados publicados: Baud rate: 115200.
-4.Utilize um cliente MQTT (ex.: MQTT Explorer) para visualizar os dados no tópico configurado:
+<ul>  
+  <li>1. Faça o upload do código para o ESP32 através da Arduino IDE.</li>
+  <li>2. Conecte o ESP32 à alimentação.</li>
+  <li>3. Acompanhe o monitor serial para verificar o status das conexões e os dados publicados: Baud rate: 115200.</li>
+  <li>4.Utilize um cliente MQTT (ex.: MQTT Explorer) para visualizar os dados no tópico configurado:</li>
+</ul>
 
 <p><b>Dependências:</b> </p>
 
-<p><b>O codigo:</b> </p>
-
-
-
-<p><b>Conclusão:</b> </p>
