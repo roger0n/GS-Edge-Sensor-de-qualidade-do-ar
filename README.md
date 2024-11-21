@@ -85,5 +85,21 @@ Potenciômetro:
   <li>4.Utilize um cliente MQTT (ex.: MQTT Explorer) para visualizar os dados no tópico configurado:</li>
 </ul>
 
-<p><b>Dependências:</b> </p>
+<p><b>Problemas Comuns e Soluções:</b></p>
+<p>Erro 5 no MQTT</p>
+<ul>
+  <li>O clientId deve ser único para cada dispositivo conectado.</li>
+  <li>Solução: Utilize String(random(0, 1000)) para gerar IDs dinâmicos.</li>
+</ul>
+
+<p>Conexão Wi-Fi Não Estabelecida</p>
+<ul>
+  <li>Verifique se o SSID e a senha estão corretos.</li>
+  <li>Certifique-se de que o ESP32 está dentro do alcance do roteador.</li>
+</ul>
+<p>Dados Não Publicados</p>
+<ul>
+  <li>Confirme que o broker MQTT está ativo e acessível.</li>
+  <li>Verifique as credenciais e o tópico configurado no código.</li>
+</ul>
 
